@@ -17,6 +17,27 @@ function readItemIds(itemIds){
 
 
 function findRelatedItems(readResult){
+  let relatedItems = [];
+  allItems.forEach(item => {
+    if(readResult[item.id]){
+      let temp = item;
+      temp.count = readResult[item.id];
+      relatedItems.push(temp);
+    }
+  });
+  console.log(relatedItems)
+  return relatedItems;
+}
+
+function takeHalfDiscount(relatedItems, itemsOnDiscount){
+
+}
+
+function takeMinusDiscount(relatedItems) {
+
+}
+
+function checkPromotions(relatedItems) {
 
 }
 
