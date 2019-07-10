@@ -96,4 +96,4 @@ function bestCharge(itemIds) {
   return printReceipt(relatedItems, discountInfo);
 }
 
-module.exports = {bestCharge};
+module.exports = {bestCharge, readItemIds, checkPromotions, findRelatedItems, takeHalfDiscount, takeMinusDiscount};
