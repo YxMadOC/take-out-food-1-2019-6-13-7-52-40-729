@@ -11,6 +11,17 @@ describe('Take out food', function () {
     expect(result).toEqual({'ITEM0001': 1, 'ITEM0013': 2, 'ITEM0022': 1});
   });
 
+  it('should return related items when invoke findRelatedItems given readResult', function () {
+    // given
+    const inputs = {'ITEM0001': 1, 'ITEM0013': 2, 'ITEM0022': 1};
+    // when
+    const result = bestCharge.findRelatedItems(inputs);
+    // then
+    expect(result).toEqual([ { id: 'ITEM0001', name: '黄焖鸡', price: 18, count: 1 },
+      { id: 'ITEM0013', name: '肉夹馍', price: 6, count: 2 },
+      { id: 'ITEM0022', name: '凉皮', price: 8, count: 1 } ]);
+  });
+
   it('should generate best charge when best is 指定菜品半价', function() {
     let inputs = ["ITEM0001 x 1", "ITEM0013 x 2", "ITEM0022 x 1"];
     let summary = bestCharge.bestCharge(inputs).trim();
