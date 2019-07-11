@@ -4,7 +4,7 @@ const items = require('./items')
 const allPromotions = promotions.loadPromotions();
 const allItems = items.loadAllItems();
 
-function readItemIds(itemIds){
+const readItemIds = (itemIds) => {
   return itemIds.reduce((prev, item) => {
     if(item.split('x')[0].trim() in prev){
       prev[item.split('x')[0].trim()]++;
@@ -13,10 +13,10 @@ function readItemIds(itemIds){
     }
     return prev;
   }, {});
-}
+};
 
 
-function findRelatedItems(readResult){
+const findRelatedItems = (readResult) => {
   let relatedItems = [];
   allItems.forEach(item => {
     if(readResult[item.id]){
@@ -25,11 +25,10 @@ function findRelatedItems(readResult){
       relatedItems.push(temp);
     }
   });
-  console.log(relatedItems)
   return relatedItems;
-}
+};
 
-function takeHalfDiscount(relatedItems, itemsOnDiscount){
+const takeHalfDiscount = (relatedItems, itemsOnDiscount) => {
   let total = 0;
   let discountFlag = false;
   relatedItems.forEach(item => {
@@ -41,9 +40,9 @@ function takeHalfDiscount(relatedItems, itemsOnDiscount){
     }
   });
   return {discountTotal: total, discounted: discountFlag, discountType: allPromotions[1].type};
-}
+};
 
-function takeMinusDiscount(relatedItems) {
+const takeMinusDiscount = (relatedItems) => {
   let total = 0;
   let discountFlag = false;
   relatedItems.forEach(item => {
@@ -54,9 +53,9 @@ function takeMinusDiscount(relatedItems) {
     total -= 6;
   }
   return {discountTotal: total, discounted: discountFlag, discountType: allPromotions[0].type};
-}
+};
 
-function checkPromotions(relatedItems) {
+const checkPromotions = (relatedItems) => {
   let total = 0;
   relatedItems.forEach(item => {
     total += item.price * item.count;
@@ -71,29 +70,29 @@ function checkPromotions(relatedItems) {
     minusDiscount.total = total;
     return minusDiscount;
   }
-}
+};
 
-function printReceipt(relatedItems, discountInfo) {
+const printReceipt = (relatedItems, discountInfo) => {
   let receiptStr = '============= 订餐明细 =============\n';
   relatedItems.forEach(item => {
     receiptStr += `${item.name} x ${item.count} = ${item.price * item.count}元\n`
   });
   receiptStr += '-----------------------------------\n';
   if(discountInfo.discounted){
-    receiptStr += '使用优惠:\n'
+    receiptStr += '使用优惠:\n';
     receiptStr += `${discountInfo.discountType}，省${discountInfo.total - discountInfo.discountTotal}元\n`;
     receiptStr += '-----------------------------------\n';
   }
   receiptStr += `总计：${discountInfo.discountTotal}元\n`;
   receiptStr += '==================================='
   return receiptStr;
-}
+};
 
-function bestCharge(itemIds) {
+const bestCharge = (itemIds) => {
   let readResult = readItemIds(itemIds);
   let relatedItems = findRelatedItems(readResult);
   let discountInfo = checkPromotions(relatedItems);
   return printReceipt(relatedItems, discountInfo);
-}
+};
 
 module.exports = {bestCharge, readItemIds, checkPromotions, findRelatedItems, takeHalfDiscount, takeMinusDiscount};
